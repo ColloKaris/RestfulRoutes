@@ -18,19 +18,23 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 // create comments
 const comments = [
-    {
+    {   
+        id: 1,
         username: "Todd",
         comment: "lol that is so funny!"
     },
     {
+        id:2,
         username: "Skyler",
         comment: "I like to go birdwatching with my dog"
     },
     {
+        id: 3,
         username: "Sk8erBoi",
         comment: "Plz delete your account, Todd"
     },
     {
+        id:4,
         username: "onlysayswoof",
         comment: "woof woof woof"
     }
@@ -50,6 +54,13 @@ app.post('/comments', (req,res) => {
     const {username, comment} = req.body;
     comments.push({username, comment})
     res.redirect('/comments'); //defaults to a get
+})
+// show route to view a single comment using the id field
+app.get('/comments/:id', (req,res) => {
+    //take the id from the request, for that we use req.params.id
+    const { id } = req.params;
+    const comment = comments.find(c => c.id === parseInt(id))
+    res.render('comments/show', { comment })
 })
 
 
