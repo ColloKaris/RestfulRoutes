@@ -40,6 +40,17 @@ const comments = [
 app.get('/comments', (req, res) => {
     res.render('comments/index', { comments })
 })
+// new route - route to render a form to create new comments
+// the form will send its data as a post request 
+app.get('/comments/new', (req, res) => {
+    res.render('comments/new')
+})
+// post route to handle the form being submitted
+app.post('/comments', (req,res) => {
+    const {username, comment} = req.body;
+    comments.push({username, comment})
+    res.send("IT WORKED!!!")
+})
 
 
 // add basic get route
