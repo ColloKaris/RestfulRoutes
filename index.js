@@ -10,15 +10,19 @@ const path = require('path')
 //what we would get from a real database
 const { v4: uuid } = require('uuid');
 
+//require method override so that we can use DELETE, PATCH, PUT
+const methodOverride = require('method-override');
+
+app.use(bodyParser.urlencoded({extended: false}))
+
+//use method-override
+app.use(methodOverride('_method'))
 
 // set a path to the views directory
 app.set('views', path.join(__dirname, 'views'))
 
 // set the templating engine to be ejs
 app.set('view engine', 'ejs');
-
-
-app.use(bodyParser.urlencoded({extended: false}))
 
 // create comments
 const comments = [
@@ -74,6 +78,16 @@ app.patch('/comments/:id', (req,res) => {
     const foundComment = comments.find(c => c.id ===id);
     foundComment.comment = newCommentText;
     res.redirect('/comments')
+})
+
+// route to serve a form to edit a comment
+app.get('/comments/:id/edit', (req,res) => {
+    const { id } = req.params;
+    const comment = comments.find(c => c.id === id)
+    //render a form
+    // we are passing in a comment because we want access to it
+    // so that we can prepopulate a form
+    res.render('comments/edit', { comment})
 })
 
 
