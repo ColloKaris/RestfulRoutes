@@ -67,6 +67,15 @@ app.get('/comments/:id', (req,res) => {
     res.render('comments/show', { comment })
 })
 
+// a PATCH route to update a comment
+app.patch('/comments/:id', (req,res) => {
+    const { id } = req.params;
+    const newCommentText = req.body.comment;
+    const foundComment = comments.find(c => c.id ===id);
+    foundComment.comment = newCommentText;
+    res.redirect('/comments')
+})
+
 
 // add basic get route
 app.get('/tacos', (req, res) => {
