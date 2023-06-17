@@ -25,7 +25,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs');
 
 // create comments
-const comments = [
+let comments = [
     {   
         id: uuid(),
         username: "Todd",
@@ -90,20 +90,14 @@ app.get('/comments/:id/edit', (req,res) => {
     res.render('comments/edit', { comment})
 })
 
-
-// add basic get route
-app.get('/tacos', (req, res) => {
-    // .send() used to send a response
-    res.send("GET /tacos response")
-    console.log(req.query)
+// Route to delete comments
+app.delete('/comments/:id', (req,res) => {
+    const { id } = req.params;
+    comments = comments.filter(c => c.id !== id) //making a new array. Immutability
+    //don't mutate an array. Make a copy and make a change to the copy
+    res.redirect('/comments');
 })
 
-// add a basic post .route
-app.post('/tacos', (req, res) => {
-    const {meat, qty} = req.body
-    res.send(`OK, here are your ${qty} ${meat} tacos`)
-    
-})
 
 //listen
 app.listen(3000, () => {
